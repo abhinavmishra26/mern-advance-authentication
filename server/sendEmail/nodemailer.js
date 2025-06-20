@@ -1,7 +1,15 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+
+// Get current file path
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load .env from one directory up from backend/
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 import nodemailer from "nodemailer";
-import dotenv from "dotenv";
-dotenv.config();
 
 const transporter=nodemailer.createTransport({
     service:"gmail",
@@ -11,6 +19,8 @@ const transporter=nodemailer.createTransport({
     }
 });
 
+console.log("Email:", process.env.SENDER_EMAIL);
+console.log("App Password:", process.env.APP_PASS ? "✔️ present" : "❌ missing");
 export const sendEmail = async (to, subject, html) => {
     try {
       await transporter.sendMail({
@@ -26,9 +36,6 @@ export const sendEmail = async (to, subject, html) => {
     }
   };
   
-
-
-
 
 
 
